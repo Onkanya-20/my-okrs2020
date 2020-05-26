@@ -108,8 +108,6 @@ const Wrapper = styled.div`
       `};
 `;
 
-const Dropzone = styled.div``;
-
 const Dropzone = props => {
   const [files, setFiles] = useState([]);
   const { getRootProps, getInputProps } = useDropzone({
