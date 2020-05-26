@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import styled from 'styled-components';
+import { uploadImage } from 'services/image';
 
 const thumbsContainer = {
   // display: 'flex',
@@ -111,7 +112,7 @@ const Wrapper = styled.div`
 const Dropzone = props => {
   const [files, setFiles] = useState([]);
   const { getRootProps, getInputProps } = useDropzone({
-    accept: 'image/*',
+    accept: ['image/jpeg', 'image/png'],
     multiple: true,
     noDrag: true,
     onDrop: acceptedFiles => {
@@ -120,6 +121,13 @@ const Dropzone = props => {
           preview: URL.createObjectURL(file)
         })
       );
+
+      const form = new FormData();
+      // form.append("user_id", 199);
+      // files.forEach(f => form.append("images", f));
+      files.forEach(f => uploadImage(f, 15));
+      // uploadImage(form);
+
       setFiles(files);
       if (props.onChange) {
         props.onChange(files);
@@ -157,10 +165,10 @@ const Dropzone = props => {
   );
 
   return (
-    <div className="d-inline-block mt-4">
-      <div {...getRootProps({ className: 'btn-dropzone' })}>
-        <input {...getInputProps()} />
-        <span>Click here to upload image</span>
+    <div>
+      <div {...getRootProps()}>
+        <input {...getInputProps({ className: 'btn-dropzone' })} />
+        <RemoveButton>Click here to upload image</RemoveButton>
       </div>
       <aside style={thumbsContainer}>{thumbs}</aside>
     </div>

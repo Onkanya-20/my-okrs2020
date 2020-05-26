@@ -60,7 +60,6 @@ const handleRequire = value => {
 // };
 
 const ExampleFinalForm = () => {
-  const { imageUpload, setImageUpload } = useState({});
   return (
     <Wrapper>
       <Headline>Simple Form Example</Headline>
@@ -99,7 +98,11 @@ const ExampleFinalForm = () => {
             />
 
             <Field name="image" label="Image" component={AdaptField}>
-              {props => <Dropzone {...props.input} />}
+              {props => (
+                <>
+                  <Dropzone {...props.input} />
+                </>
+              )}
             </Field>
 
             <div className="buttons">
