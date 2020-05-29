@@ -7,7 +7,8 @@ import { Wrapper, Headline } from './index.view';
 import { AdaptField, AdaptSelect, AdaptTextarea } from 'components/Field';
 import Button from 'components/Button';
 
-import { string, number } from 'yup';
+import { string, number, object } from 'yup';
+// import * as yup from 'yup';
 
 import Dropzone from './dropzone';
 
@@ -41,12 +42,18 @@ const animalOptions = [
 const handleRequire = value => {
   // const data = string().required();
   // return data.isValid(value).then(res => (res ? undefined : 'please'));
-  const schema = number()
-    .required('Please enter your firstname.')
-    .min(5)
-    .max(10);
+  const schema = object().shape({
+    firstName: string()
+      .required('Please enter your firstname.')
+      .min(5)
+      .max(10),
+    lastName: string()
+      .required('Please enter your lastName.')
+      .email()
+      .min(6)
+  });
   return schema
-    .validate(value)
+    .validate({ firstName: value.firstName, lastName: value.lastName })
     .then(res => undefined)
     .catch(error => error.errors);
 };
@@ -65,20 +72,16 @@ const ExampleFinalForm = () => {
       <Headline>Simple Form Example</Headline>
       <Form
         onSubmit={() => ({})}
+        validate={values => handleRequire(values)}
         render={({ handleSubmit, form, submitting, pristine, values }) => (
           <form onSubmit={handleSubmit}>
-            <Field
-              name="firstName"
-              label="FirstName"
-              component={AdaptField}
-              validate={required('firstName') && minLength(20) && email}
-            />
+            <Field name="firstName" label="FirstName" component={AdaptField} />
 
             <Field
               name="lastName"
               label="LastName"
               component={AdaptField}
-              validate={required('Last Name')}
+              // validate={required('Last Name')}
             />
 
             <Field
