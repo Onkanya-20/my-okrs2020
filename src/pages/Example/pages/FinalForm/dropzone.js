@@ -1,49 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useDropzone } from 'react-dropzone';
+import React, { useState } from 'react';
+import Dropzone from 'react-dropzone';
 import styled from 'styled-components';
-import { uploadImage } from 'services/image';
-
-const thumbsContainer = {
-  // display: 'flex',
-  // flexDirection: 'row',
-  // flexWrap: 'wrap',
-  marginTop: 16,
-  marginButton: 20
-};
-
-const thumb = {
-  // display: 'flex',
-  // display: 'inline-flex',
-  width: 100,
-  height: 100,
-  boxSizing: 'border-box'
-};
-
-const thumbInner = {
-  display: 'flex',
-  minWidth: 0,
-  overflow: 'hidden'
-};
-
-const img = {
-  display: 'block',
-  width: 'auto',
-  height: '100%'
-};
-
-const RemoveButton = styled.button`
-  ${({ theme }) => theme.typography.button()}
-    color: ${({ theme }) => theme.color.lightBlue};
-    border-radius: 100px;
-    background-position: 16px 50%;
-    background-repeat: no-repeat;
-    border: 0;
-    padding: 4px 16px 4px 36px;
-    cursor: pointer;
-    margin: 0 auto;
-    margin-top: 8px;
-    outline: none;
-`;
+import PropTypes from 'prop-types';
 
 const PreviewImage = styled.span`
   width: 100%;
@@ -57,7 +15,7 @@ const PreviewImage = styled.span`
 `;
 
 const Wrapper = styled.div`
-  margin: 0 auto;
+  margin: 10px;
   border-radius: 8px;
   border: 2px solid transparent;
   overflow: hidden;
@@ -82,7 +40,7 @@ const Wrapper = styled.div`
     !readOnly
       ? `
       &:hover {
-        border: 2px solid red
+        border: 2px solid ${theme.color.lightGray}
       }
       &:active {
         border-color: ${theme.color.lightBlue};
@@ -109,70 +67,80 @@ const Wrapper = styled.div`
       `};
 `;
 
-const Dropzone = props => {
-  const [files, setFiles] = useState([]);
-  const { getRootProps, getInputProps } = useDropzone({
-    accept: ['image/jpeg', 'image/png'],
-    multiple: true,
-    noDrag: true,
-    onDrop: acceptedFiles => {
-      const files = acceptedFiles.map(file =>
-        Object.assign(file, {
-          preview: URL.createObjectURL(file)
-        })
-      );
+const RemoveButton = styled.button`
+  ${({ theme }) => theme.typography.button()}
+    color: ${({ theme }) => theme.color.lightBlue};
+    border-radius: 100px;
+    background-position: 16px 50%;
+    background-repeat: no-repeat;
+    border: 0;
+    padding: 4px 10px;
+    cursor: pointer;
+    margin: 0 auto;
+    margin-top: 8px;
+    outline: none;
+`;
+const BrowseButton = styled.div`
+  ${({ theme }) => theme.typography.button()}
+    color: ${({ theme }) => theme.color.lightBlue};
+    border-radius: 100px;
+    background-position: 16px 50%;
+    background-repeat: no-repeat;
+    border: 0;
+    padding: 4px 10px;
+    cursor: pointer;
+    margin: 0 auto;
+    margin-top: 8px;
+    outline: none;
+`;
 
-      const form = new FormData();
-      // form.append("user_id", 199);
-      // files.forEach(f => form.append("images", f));
-      files.forEach(f => uploadImage(f, 15));
-      // uploadImage(form);
-
-      setFiles(files);
-      if (props.onChange) {
-        props.onChange(files);
-      }
+const DropzonePropTypes = {
+  props: PropTypes.object
+};
+const CustomDropzone = props => {
+  const [uploadFile, setUploadFile] = useState([]);
+  const onDrop = acceptedFiles => {
+    const files = acceptedFiles.map(file =>
+      Object.assign(file, {
+        preview: URL.createObjectURL(file)
+      })
+    );
+    setUploadFile(uploadFile.concat(files));
+    if (props.onChange) {
+      props.onChange(uploadFile.concat(files));
     }
-  });
-
-  const removeFile = file => () => {
-    const newFiles = [...files];
-    newFiles.splice(newFiles.indexOf(file), 1);
-    setFiles(newFiles);
   };
 
-  const thumbs = files.map(file => (
+  const removeFile = file => () => {
+    const newFiles = [...uploadFile];
+    newFiles.splice(newFiles.indexOf(file), 1);
+    setUploadFile(newFiles);
+  };
+
+  const previewImage = uploadFile.map(file => (
     <>
       <Wrapper>
         <PreviewImage src={file.preview} key={file.name} />
       </Wrapper>
-      <RemoveButton onClick={removeFile(file)}>Remove File</RemoveButton>
-      {/* <div style={thumb} key={file.name}>
-        <div style={thumbInner}>
-          <img src={file.preview} style={img} alt="" />
-        </div>
-        <button onClick={removeFile(file)}>Remove File</button>
-      </div> */}
+      <RemoveButton onClick={removeFile(file)}>remove image</RemoveButton>
     </>
   ));
 
-  useEffect(
-    () => () => {
-      // Make sure to revoke the data uris to avoid memory leaks
-      files.forEach(file => URL.revokeObjectURL(file.preview));
-    },
-    [files]
-  );
-
   return (
-    <div>
-      <div {...getRootProps()}>
-        <input {...getInputProps({ className: 'btn-dropzone' })} />
-        <RemoveButton>Click here to upload image</RemoveButton>
-      </div>
-      <aside style={thumbsContainer}>{thumbs}</aside>
+    <div className="text-center mt-5">
+      <Dropzone onDrop={onDrop} accept={props.acceptedFile}>
+        {({ getRootProps, getInputProps }) => (
+          <BrowseButton {...getRootProps()}>
+            <input {...getInputProps()} />
+            Click me to upload a file!
+          </BrowseButton>
+        )}
+      </Dropzone>
+      <>{previewImage}</>
     </div>
   );
 };
 
-export default Dropzone;
+CustomDropzone.propTypes = DropzonePropTypes;
+
+export default CustomDropzone;

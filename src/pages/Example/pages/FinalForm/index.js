@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Form, Field, FormSpy } from 'react-final-form';
+import React from 'react';
+import { Form, Field } from 'react-final-form';
 
 import { required, minLength, email, maxLength } from 'utils/form/validators';
 
@@ -67,21 +67,30 @@ const handleRequire = value => {
 // };
 
 const ExampleFinalForm = () => {
+  const acceptedFile = ['image/png', 'image/jpeg'];
+
+  const onSubmit = value => {
+    console.log('value ::', value);
+  };
   return (
     <Wrapper>
       <Headline>Simple Form Example</Headline>
       <Form
-        onSubmit={() => ({})}
-        validate={values => handleRequire(values)}
+        onSubmit={onSubmit}
         render={({ handleSubmit, form, submitting, pristine, values }) => (
           <form onSubmit={handleSubmit}>
-            <Field name="firstName" label="FirstName" component={AdaptField} />
+            <Field
+              name="firstName"
+              label="FirstName"
+              component={AdaptField}
+              validate={required('First Name')}
+            />
 
             <Field
               name="lastName"
               label="LastName"
               component={AdaptField}
-              // validate={required('Last Name')}
+              validate={required('Last Name')}
             />
 
             <Field
@@ -103,7 +112,7 @@ const ExampleFinalForm = () => {
             <Field name="image" label="Image" component={AdaptField}>
               {props => (
                 <>
-                  <Dropzone {...props.input} />
+                  <Dropzone {...props.input} acceptedFile={acceptedFile} />
                 </>
               )}
             </Field>
