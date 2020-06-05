@@ -1,10 +1,27 @@
-import React from 'react';
-import withSecretToLife from './index.view';
+import React, { useState, useEffect } from 'react';
+import withStorage from './index.view';
 
-const DisplayTheSecret = props => (
-  <div>The secret to life is {props.secretToLife}.</div>
-);
+const ComponentNeedingStorage = props => {
+  const [username, setUsername] = useState('');
+  const [favoriteMovie, setFavoriteMovie] = useState('');
 
-const WrappedComponent = withSecretToLife(DisplayTheSecret);
+  useEffect(() => {
+    handleState();
+  }, []);
+
+  const handleState = () => {
+    const usernameObj = props.load('username');
+    const favoriteMovieObj = props.load('favoriteMovie');
+    setUsername(usernameObj);
+    setFavoriteMovie(favoriteMovieObj);
+  };
+  return (
+    <div>
+      data ia {username} {favoriteMovie}
+    </div>
+  );
+};
+
+const WrappedComponent = withStorage(ComponentNeedingStorage);
 
 export default WrappedComponent;
