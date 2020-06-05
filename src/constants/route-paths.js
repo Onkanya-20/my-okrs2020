@@ -11,6 +11,7 @@ export const EXAMPLE_GITHUB_USER_LIST = 'EXAMPLE_GITHUB_USER_LIST';
 export const EXAMPLE_COUNTER = 'EXAMPLE_COUNTER';
 
 export const EXAMPLE_FINAL_FORM = 'EXAMPLE_FINAL_FORM';
+export const EXAMPLE_PATTERN = 'EXAMPLE_PATTERN';
 
 const routeUrlProvider = createRouteUrlProvider();
 
@@ -21,5 +22,6 @@ routeUrlProvider.set(EXAMPLE_TODO_LIST, '/todo-with-redux');
 routeUrlProvider.set(EXAMPLE_GITHUB_USER_LIST, '/github-user-list');
 routeUrlProvider.set(EXAMPLE_COUNTER, '/counter');
 routeUrlProvider.set(EXAMPLE_FINAL_FORM, '/final-form');
+routeUrlProvider.set(EXAMPLE_PATTERN, '/pattern-practice');
 
 export default routeUrlProvider;

@@ -4,7 +4,8 @@ import routeUrlProvider, {
   EXAMPLE_TODO_LIST,
   EXAMPLE_COUNTER,
   EXAMPLE_GITHUB_USER_LIST,
-  EXAMPLE_FINAL_FORM
+  EXAMPLE_FINAL_FORM,
+  EXAMPLE_PATTERN
 } from 'constants/route-paths';
 import { Route } from 'react-router-dom';
 import Counter from './pages/Counter';
@@ -12,6 +13,7 @@ import UserList from './pages/UserList';
 import Todo from './pages/Todo';
 import FinalForm from './pages/FinalForm';
 import Example from './index';
+import Pattern from './pages/Pattern';
 
 const RouterPropTypes = {
   match: PropTypes.object
@@ -44,6 +46,11 @@ const Router = ({ match }) => {
           EXAMPLE_FINAL_FORM
         )}`}
         component={FinalForm}
+      />
+      <Route
+        exact
+        path={`${match.path}${routeUrlProvider.getForRoute(EXAMPLE_PATTERN)}`}
+        component={Pattern}
       />
     </>
   );
