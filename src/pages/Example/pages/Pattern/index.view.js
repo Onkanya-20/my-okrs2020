@@ -22,10 +22,24 @@ const withStorage = WrappedComponent => {
       }
     };
 
+    const save = (key, data) => {
+      if (localStorageAvailable) {
+        localStorage.setItem(key, data);
+      }
+    };
+
+    const remove = key => {
+      if (localStorageAvailable) {
+        localStorage.removeItem(key);
+      }
+    };
+
     useEffect(() => {
       checkLocalStorageExists();
-    }, []);
-    return <WrappedComponent {...props} load={load} />;
+    });
+    return (
+      <WrappedComponent {...props} load={load} save={save} remove={remove} />
+    );
   };
   return HOC;
 };
