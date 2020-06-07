@@ -10,7 +10,8 @@ import Button from 'components/Button';
 import { string, number, object } from 'yup';
 // import * as yup from 'yup';
 
-import Dropzone from './dropzone';
+// import Dropzone from './dropzone';
+import DropzoneHoc from './DropzoneHOC';
 
 const animalOptions = [
   {
@@ -67,8 +68,6 @@ const handleRequire = value => {
 // };
 
 const ExampleFinalForm = () => {
-  const acceptedFile = ['image/png', 'image/jpeg'];
-
   const onSubmit = value => {
     console.log('value ::', value);
   };
@@ -109,10 +108,17 @@ const ExampleFinalForm = () => {
               optional
             />
 
-            <Field name="image" label="Image" component={AdaptField}>
+            {/* <Field name="image" label="Image" component={AdaptField}>
               {props => (
                 <>
                   <Dropzone {...props.input} acceptedFile={acceptedFile} />
+                </>
+              )}
+            </Field> */}
+            <Field name="image" label="Image" component={AdaptField}>
+              {props => (
+                <>
+                  <DropzoneHoc {...props.input} />
                 </>
               )}
             </Field>
