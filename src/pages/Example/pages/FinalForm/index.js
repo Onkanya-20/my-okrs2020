@@ -11,7 +11,8 @@ import { string, number, object } from 'yup';
 // import * as yup from 'yup';
 
 // import Dropzone from './dropzone';
-import DropzoneHoc from './DropzoneHOC';
+// import DropzoneHoc from './DropzoneHOC';
+import DropzoneRenderProps from './DropzoneRenderProps';
 
 const animalOptions = [
   {
@@ -115,10 +116,17 @@ const ExampleFinalForm = () => {
                 </>
               )}
             </Field> */}
-            <Field name="image" label="Image" component={AdaptField}>
+            {/* <Field name="image" label="Image" component={AdaptField}>
               {props => (
                 <>
                   <DropzoneHoc {...props.input} />
+                </>
+              )}
+            </Field> */}
+            <Field name="image" label="Image" component={AdaptField}>
+              {props => (
+                <>
+                  <DropzoneRenderProps {...props.input} />
                 </>
               )}
             </Field>

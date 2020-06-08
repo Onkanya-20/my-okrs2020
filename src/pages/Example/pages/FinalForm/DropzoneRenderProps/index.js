@@ -1,9 +1,9 @@
 import React from 'react';
-import withUploadFile from './uploadFile';
+import PropTypes from 'prop-types';
+import UploadFile from './uploadFile';
 import Dropzone from 'react-dropzone';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
-import Loading from './loading';
+import Loading from '../DropzoneHOC/loading';
 
 const PreviewImage = styled.span`
   width: 100%;
@@ -96,14 +96,19 @@ const BrowseButton = styled.div`
     outline: none;
 `;
 
-const UploadImagePropTypes = {
+const ComponentWithUploadFilePropTypes = {
   uploadFile: PropTypes.array,
   removeFile: PropTypes.func,
   onDrop: PropTypes.func,
   isLoading: PropTypes.bool
 };
 
-const UploadImage = ({ uploadFile, removeFile, onDrop, isLoading }) => {
+const ComponentWithUploadFile = ({
+  uploadFile,
+  removeFile,
+  onDrop,
+  isLoading
+}) => {
   const acceptedFile = ['image/png', 'image/jpeg'];
 
   const previewImage = uploadFile.map(file => (
@@ -132,5 +137,30 @@ const UploadImage = ({ uploadFile, removeFile, onDrop, isLoading }) => {
   );
 };
 
-UploadImage.propTypes = UploadImagePropTypes;
-export default withUploadFile(UploadImage);
+ComponentWithUploadFile.propTypes = ComponentWithUploadFilePropTypes;
+
+const WrappedComponentPropTypes = {
+  onDrop: PropTypes.func
+};
+
+const WrappedComponent = props => {
+  return (
+    <UploadFile
+      render={({ uploadFile, removeFile, onDrop, isLoading }) => {
+        return (
+          <ComponentWithUploadFile
+            onDrop={onDrop}
+            uploadFile={uploadFile}
+            removeFile={removeFile}
+            isLoading={isLoading}
+          />
+        );
+      }}
+      onChange={props.onChange}
+    />
+  );
+};
+
+WrappedComponent.propTypes = WrappedComponentPropTypes;
+
+export default WrappedComponent;

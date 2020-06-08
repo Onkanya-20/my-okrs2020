@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Storage from './index.view';
+import PropTypes from 'prop-types';
+
 // import SharedComponent from './index.view';
 
 // const SayHello = () => {
@@ -35,6 +37,11 @@ import Storage from './index.view';
 //   />
 // );
 
+const StoragePropTypes = {
+  load: PropTypes.func,
+  save: PropTypes.func
+};
+
 const ComponentNeedingStorage = ({ save, load }) => {
   const [username, setUsername] = useState('');
   const [favoriteMovie, setFavoriteMovie] = useState('');
@@ -59,6 +66,8 @@ const ComponentNeedingStorage = ({ save, load }) => {
     </div>
   );
 };
+
+ComponentNeedingStorage.propTypes = StoragePropTypes;
 
 const WrapperComponent = () => {
   return (

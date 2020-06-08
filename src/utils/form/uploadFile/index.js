@@ -4,8 +4,10 @@ import PropTypes from 'prop-types';
 const withUploadFile = WrappedComponent => {
   const HandleUpload = ({ onChange }) => {
     const [uploadFile, setUploadFile] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const onDrop = acceptedFiles => {
+      setLoading(true);
       const files = acceptedFiles.map(file =>
         Object.assign(file, {
           preview: URL.createObjectURL(file)
@@ -15,6 +17,7 @@ const withUploadFile = WrappedComponent => {
       if (onChange) {
         onChange(uploadFile.concat(files));
       }
+      setLoading(false);
     };
 
     const removeFile = file => () => {
@@ -28,6 +31,7 @@ const withUploadFile = WrappedComponent => {
         onDrop={onDrop}
         removeFile={removeFile}
         uploadFile={uploadFile}
+        isLoading={loading}
       />
     );
   };

@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 
 // const SharedComponent = props => {
 //   return <div>{props.render()}</div>;
 // };
-
-const Storage = props => {
+const StoragePropTypes = {
+  render: PropTypes.func
+};
+const Storage = ({ render }) => {
   const [localStorageAvailable, setLocalStorageAvailable] = useState(false);
 
   const checkLocalStorageExists = () => {
@@ -45,13 +48,15 @@ const Storage = props => {
 
   return (
     <span>
-      {props.render({
-        load: load,
-        save: save,
+      {render({
+        load,
+        save,
         remove
       })}
     </span>
   );
 };
+
+Storage.propTypes = StoragePropTypes;
 
 export default Storage;
