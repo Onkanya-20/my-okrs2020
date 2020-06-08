@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+import UploadFile from './uploadFile';
 import Dropzone from 'react-dropzone';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
+import Loading from '../DropzoneHOC/loading';
 
 const PreviewImage = styled.span`
   width: 100%;
@@ -67,7 +69,7 @@ const Wrapper = styled.div`
       `};
 `;
 
-const RemoveButton = styled.button`
+const RemoveButton = styled.div`
   ${({ theme }) => theme.typography.button()}
     color: ${({ theme }) => theme.color.lightBlue};
     border-radius: 100px;
@@ -94,33 +96,27 @@ const BrowseButton = styled.div`
     outline: none;
 `;
 
-const DropzonePropTypes = {
-  props: PropTypes.object
+const ComponentWithUploadFilePropTypes = {
+  uploadFile: PropTypes.array,
+  removeFile: PropTypes.func,
+  onDrop: PropTypes.func,
+  isLoading: PropTypes.bool
 };
-const CustomDropzone = props => {
-  const [uploadFile, setUploadFile] = useState([]);
-  const onDrop = acceptedFiles => {
-    const files = acceptedFiles.map(file =>
-      Object.assign(file, {
-        preview: URL.createObjectURL(file)
-      })
-    );
-    setUploadFile(uploadFile.concat(files));
-    if (props.onChange) {
-      props.onChange(uploadFile.concat(files));
-    }
-  };
 
-  const removeFile = file => () => {
-    const newFiles = [...uploadFile];
-    newFiles.splice(newFiles.indexOf(file), 1);
-    setUploadFile(newFiles);
-  };
+const ComponentWithUploadFile = ({
+  uploadFile,
+  removeFile,
+  onDrop,
+  isLoading
+}) => {
+  const acceptedFile = ['image/png', 'image/jpeg'];
 
   const previewImage = uploadFile.map(file => (
     <>
+      {(() => {})(console.log('loading::', isLoading))}
       <Wrapper>
         <PreviewImage src={file.preview} key={file.name} />
+        {isLoading ? <Loading /> : null}
       </Wrapper>
       <RemoveButton onClick={removeFile(file)}>remove image</RemoveButton>
     </>
@@ -128,7 +124,7 @@ const CustomDropzone = props => {
 
   return (
     <div className="text-center mt-5">
-      <Dropzone onDrop={onDrop} accept={props.acceptedFile}>
+      <Dropzone onDrop={onDrop} accept={acceptedFile}>
         {({ getRootProps, getInputProps }) => (
           <BrowseButton {...getRootProps()}>
             <input {...getInputProps()} />
@@ -141,6 +137,30 @@ const CustomDropzone = props => {
   );
 };
 
-CustomDropzone.propTypes = DropzonePropTypes;
+ComponentWithUploadFile.propTypes = ComponentWithUploadFilePropTypes;
 
-export default CustomDropzone;
+const WrappedComponentPropTypes = {
+  onDrop: PropTypes.func
+};
+
+const WrappedComponent = props => {
+  return (
+    <UploadFile
+      render={({ uploadFile, removeFile, onDrop, isLoading }) => {
+        return (
+          <ComponentWithUploadFile
+            onDrop={onDrop}
+            uploadFile={uploadFile}
+            removeFile={removeFile}
+            isLoading={isLoading}
+          />
+        );
+      }}
+      onChange={props.onChange}
+    />
+  );
+};
+
+WrappedComponent.propTypes = WrappedComponentPropTypes;
+
+export default WrappedComponent;

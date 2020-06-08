@@ -122,5 +122,12 @@
     "testing-library": "^0.0.2",
     "typescript": "^3.8.3",
     "yargs": "^15.0.2"
+  },
+  "bit": {
+    "env": {
+      "compiler": "bit.envs/compilers/react@1.0.18"
+    },
+    "componentsDefaultDirectory": "components/{name}",
+    "packageManager": "yarn"
   }
 }
