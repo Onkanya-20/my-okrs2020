@@ -23,6 +23,7 @@ const withStorage = WrappedComponent => {
     };
 
     const save = (key, data) => {
+      console.log(data);
       if (localStorageAvailable) {
         localStorage.setItem(key, data);
       }
@@ -36,7 +37,7 @@ const withStorage = WrappedComponent => {
 
     useEffect(() => {
       checkLocalStorageExists();
-    });
+    }, []);
     return (
       <WrappedComponent {...props} load={load} save={save} remove={remove} />
     );
