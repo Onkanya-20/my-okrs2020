@@ -1,18 +1,17 @@
 import React from 'react';
 import { Form, Field } from 'react-final-form';
 
-import { required, minLength, email, maxLength } from 'utils/form/validators';
+import { required } from 'utils/form/validators';
 
 import { Wrapper, Headline } from './index.view';
 import { AdaptField, AdaptSelect, AdaptTextarea } from 'components/Field';
 import Button from 'components/Button';
 
-import { string, number, object } from 'yup';
 // import * as yup from 'yup';
 
 // import Dropzone from './dropzone';
-// import DropzoneHoc from './DropzoneHOC';
-import DropzoneRenderProps from './DropzoneRenderProps';
+import DropzoneHoc from './DropzoneHOC';
+// import DropzoneRenderProps from './DropzoneRenderProps';
 
 const animalOptions = [
   {
@@ -40,33 +39,6 @@ const animalOptions = [
     text: 'Goldfish'
   }
 ];
-
-const handleRequire = value => {
-  // const data = string().required();
-  // return data.isValid(value).then(res => (res ? undefined : 'please'));
-  const schema = object().shape({
-    firstName: string()
-      .required('Please enter your firstname.')
-      .min(5)
-      .max(10),
-    lastName: string()
-      .required('Please enter your lastName.')
-      .email()
-      .min(6)
-  });
-  return schema
-    .validate({ firstName: value.firstName, lastName: value.lastName })
-    .then(res => undefined)
-    .catch(error => error.errors);
-};
-
-// const handleMin = value => {
-//   const schema = string().min(10);
-//   return schema
-//     .validate(value)
-//     .then(res => undefined)
-//     .catch(error => error.errors);
-// };
 
 const ExampleFinalForm = () => {
   const onSubmit = value => {
@@ -116,20 +88,8 @@ const ExampleFinalForm = () => {
                 </>
               )}
             </Field> */}
-            {/* <Field name="image" label="Image" component={AdaptField}>
-              {props => (
-                <>
-                  <DropzoneHoc {...props.input} />
-                </>
-              )}
-            </Field> */}
-            <Field name="image" label="Image" component={AdaptField}>
-              {props => (
-                <>
-                  <DropzoneRenderProps {...props.input} />
-                </>
-              )}
-            </Field>
+            <Field name="image" label="Image" component={DropzoneHoc} />
+            {/* <Field name="image" label="Image" component={DropzoneRenderProps} /> */}
 
             <div className="buttons">
               <Button type="submit" solid disabled={submitting}>

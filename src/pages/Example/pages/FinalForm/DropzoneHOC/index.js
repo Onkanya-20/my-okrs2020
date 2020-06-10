@@ -108,7 +108,6 @@ const UploadImage = ({ uploadFile, removeFile, onDrop, isLoading }) => {
 
   const previewImage = uploadFile.map(file => (
     <>
-      {(() => {})(console.log('loading::', isLoading))}
       <Wrapper>
         <PreviewImage src={file.preview} key={file.name} />
         {isLoading ? <Loading /> : null}

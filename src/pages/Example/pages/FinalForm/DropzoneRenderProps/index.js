@@ -140,10 +140,10 @@ const ComponentWithUploadFile = ({
 ComponentWithUploadFile.propTypes = ComponentWithUploadFilePropTypes;
 
 const WrappedComponentPropTypes = {
-  onDrop: PropTypes.func
+  onChange: PropTypes.func
 };
 
-const WrappedComponent = props => {
+const WrappedComponent = ({ onChange }) => {
   return (
     <UploadFile
       render={({ uploadFile, removeFile, onDrop, isLoading }) => {
@@ -156,7 +156,7 @@ const WrappedComponent = props => {
           />
         );
       }}
-      onChange={props.onChange}
+      onChange={onChange}
     />
   );
 };
