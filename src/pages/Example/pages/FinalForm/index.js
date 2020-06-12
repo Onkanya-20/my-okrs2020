@@ -1,18 +1,34 @@
 import React from 'react';
 import { Form, Field } from 'react-final-form';
-import { setIn } from 'final-form';
+// import { setIn } from 'final-form';
 
-import { required } from 'utils/form/validators';
+import { required, minLength, email } from 'utils/form/validators';
 
 import { Wrapper, Headline } from './index.view';
 import { AdaptField, AdaptSelect, AdaptTextarea } from 'components/Field';
 import Button from 'components/Button';
-import { string, object } from 'yup';
+// import { string, object } from 'yup';
 // import * as yup from 'yup';
 
 // import Dropzone from './dropzone';
 import DropzoneHoc from './DropzoneHOC';
 // import DropzoneRenderProps from './DropzoneRenderProps';
+
+import spected from 'spected';
+import { compose, curry, head, isEmpty, length, not, prop } from 'ramda';
+// import {
+//   requireError,
+//   minLengthError,
+//   maxLengthError,
+//   emailError
+// } from 'utils/form/validators/errorMessage';
+
+// import {
+//   requiredValidate,
+//   minLengthValidate,
+//   maxLengthValidate,
+//   emailValidate
+// } from 'utils/form/validators/validate';
 
 const animalOptions = [
   {
@@ -41,38 +57,71 @@ const animalOptions = [
   }
 ];
 
+// predicates
+const notEmpty = compose(not, isEmpty);
+const hasCapitalLetter = a => /[A-Z]/.test(a);
+const isGreaterThan = curry((len, a) => a > len);
+const isLengthGreaterThan = len => compose(isGreaterThan(len), prop('length'));
+const requiredValidate = value => value && !!value.trim();
+
+// error message
+const notEmptyMsg = field => `${field} should not be empty.`;
+const minimumMsg = (field, len) =>
+  `Minimum ${field} length of ${len} is required.`;
+const capitalLetterMsg = field =>
+  `${field} should contain at least one uppercase letter.`;
+const requireError = fieldName => `${fieldName} is required.`;
+
 const ExampleFinalForm = () => {
   const onSubmit = value => {
     console.log('value ::', value);
   };
 
-  const validate = async values => {
-    try {
-      await handleRequire().validate(values, { abortEarly: false });
-    } catch (err) {
-      const errors = err.inner.reduce((formError, innerError) => {
-        return setIn(formError, innerError.path, innerError.message);
-      }, {});
-      return errors;
-    }
+  //rules
+  const nameValidationRule = [
+    [requiredValidate, requireError('firstName')],
+    [hasCapitalLetter, capitalLetterMsg('firstName')],
+    [isLengthGreaterThan(20), minimumMsg('firstName', 20)]
+  ];
+
+  // const validate = async values => {
+  //   try {
+  //     await handleRequire().validate(values, { abortEarly: false });
+  //   } catch (err) {
+  //     const errors = err.inner.reduce((formError, innerError) => {
+  //       return setIn(formError, innerError.path, innerError.message);
+  //     }, {});
+  //     return errors;
+  //   }
+  // };
+  // const handleRequire = () => {
+  //   // const data = string().required();
+  //   // return data.isValid(value).then(res => (res ? undefined : 'please'));
+  //   const schema = object().shape({
+  //     firstName: string()
+  //       .required('Please enter your firstname.')
+  //       .min(5)
+  //       .max(10),
+  //     lastName: string()
+  //       .required('Please enter your lastName.')
+  //       .email()
+  //       .min(6)
+  //   });
+  //   return schema;
+  //   // .validate({ firstName: value.firstName, lastName: value.lastName })
+  //   // .then(res => undefined)
+  //   // .catch(error => error.errors);
+  // };
+  const validationRules = {
+    firstName: nameValidationRule
   };
-  const handleRequire = () => {
-    // const data = string().required();
-    // return data.isValid(value).then(res => (res ? undefined : 'please'));
-    const schema = object().shape({
-      firstName: string()
-        .required('Please enter your firstname.')
-        .min(5)
-        .max(10),
-      lastName: string()
-        .required('Please enter your lastName.')
-        .email()
-        .min(6)
-    });
-    return schema;
-    // .validate({ firstName: value.firstName, lastName: value.lastName })
-    // .then(res => undefined)
-    // .catch(error => error.errors);
+
+  const validate = values => {
+    return spected(validationRules, { firstName: values.firstName });
+    // firstName: [
+    //   [isLengthGreaterThan(2), minimumMsg('Random', 3)],
+    //   [hasCapitalLetter, capitalLetterMsg('Random')]
+    // ]
   };
 
   return (
@@ -80,15 +129,13 @@ const ExampleFinalForm = () => {
       <Headline>Simple Form Example</Headline>
       <Form
         onSubmit={onSubmit}
-        validate={values => validate(values)}
+        validate={validate}
         render={({ handleSubmit, form, submitting, pristine, values }) => (
           <form onSubmit={handleSubmit}>
-            <Field
+            {/* <Field
               name="firstName"
               label="FirstName"
-              // subscription={{ error: true, touched: true }}
-              // component={AdaptField}
-              // validate={required('First Name')}
+              validate={compose(required('test'), minLength(20))}
             >
               {props => {
                 const { input, meta, ...rest } = props;
@@ -99,19 +146,19 @@ const ExampleFinalForm = () => {
                       type="text"
                       placeholder="FirstName"
                     />
-                    {/* {(meta.error || meta.submitError) && meta.touched && (
-                      <span>{meta.error || meta.submitError}</span>
-                    )} */}
+                    {meta.errors && meta.touched && <span>{meta.errors}</span>}
                   </>
                 );
               }}
-            </Field>
+            </Field> */}
+
+            <Field name="firstName" label="FirstName" component={AdaptField} />
 
             <Field
               name="lastName"
               label="LastName"
               component={AdaptField}
-              // validate={required('Last Name')}
+              validate={required('Last Name')}
             />
 
             <Field

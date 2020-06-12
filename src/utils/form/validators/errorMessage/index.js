@@ -32,3 +32,10 @@ export const isUrlValidError = provideErrorMessage(`It's not a valid url.`);
 export const passwordValidError = provideErrorMessage(
   `Password must be at least 9 characters includes lowwer case, upper case, numeric and symbols at least 1`
 );
+export const newRequired = value => {
+  const isRequied = provideErrorMessage(`${value} is required.`);
+  const counterCharactor = provideErrorMessage(
+    `${value} is more than 20 charactor.`
+  );
+  return { isRequied: isRequied, counterCharactor: counterCharactor };
+};

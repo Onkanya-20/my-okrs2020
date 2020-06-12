@@ -14023,6 +14023,11 @@ ramda@^0.21.0:
   resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.21.0.tgz#a001abedb3ff61077d4ff1d577d44de77e8d0a35"
   integrity sha1-oAGr7bP/YQd9T/HVd9RN536NCjU=
 
+ramda@^0.24.1:
+  version "0.24.1"
+  resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.24.1.tgz#c3b7755197f35b8dc3502228262c4c91ddb6b857"
+  integrity sha1-w7d1UZfzW43DUCIoJixMkd22uFc=
+
 ramda@^0.27.0:
   version "0.27.0"
   resolved "https://registry.yarnpkg.com/ramda/-/ramda-0.27.0.tgz#915dc29865c0800bf3f69b8fd6c279898b59de43"
@@ -15878,6 +15883,13 @@ specificity@^0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/specificity/-/specificity-0.4.1.tgz#aab5e645012db08ba182e151165738d00887b019"
   integrity sha512-1klA3Gi5PD1Wv9Q0wUoOQN1IWAuPu0D1U03ThXTr0cJ20+/iq2tHSDnK7Kk/0LXJ1ztUB2/1Os0wKmfyNgUQfg==
+
+spected@^0.7.1:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/spected/-/spected-0.7.1.tgz#ffc077902bad83e6e24528d1d35790520b81795f"
+  integrity sha512-phidDkvnlaRDDfBmlQez8L0kQ9/RIqddmcz1QbBg7askbwIXTpB54Quq2CHFtN6rew2QnHk8VfNqZ5cURzV94w==
+  dependencies:
+    ramda "^0.24.1"
 
 split-string@^3.0.1, split-string@^3.0.2:
   version "3.1.0"

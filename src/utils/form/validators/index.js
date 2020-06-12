@@ -19,7 +19,8 @@ import {
   wordCharacterError,
   isSameError,
   isUrlValidError,
-  passwordValidError
+  passwordValidError,
+  newRequired
 } from './errorMessage';
 export { default as composeValidators } from './utils/composeValidators';
 
@@ -49,3 +50,6 @@ export const isSame = comparedField => (value, values) =>
 export const isUrlValid = compose(isUrlValidError, isUrlValidate);
 
 export const passwordValid = compose(passwordValidError, passwordValidValidate);
+
+export const newValidate = fieldName =>
+  compose(newRequired(fieldName), requiredValidate);
