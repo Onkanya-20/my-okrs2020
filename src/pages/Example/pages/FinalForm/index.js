@@ -65,12 +65,14 @@ const isLengthGreaterThan = len => compose(isGreaterThan(len), prop('length'));
 const requiredValidate = value => value && !!value.trim();
 
 // error message
-const notEmptyMsg = field => `${field} should not be empty.`;
-const minimumMsg = (field, len) =>
-  `Minimum ${field} length of ${len} is required.`;
-const capitalLetterMsg = field =>
-  `${field} should contain at least one uppercase letter.`;
-const requireError = fieldName => `${fieldName} is required.`;
+const notEmptyMsg = field => <div>{`${field} should not be empty.`}</div>;
+const minimumMsg = (field, len) => (
+  <div>{`Minimum ${field} length of ${len} is required.`}</div>
+);
+const capitalLetterMsg = field => (
+  <div>{`${field} should contain at least one uppercase letter.`}</div>
+);
+const requireError = fieldName => <div>{`${fieldName} is required.`}</div>;
 
 const ExampleFinalForm = () => {
   const onSubmit = value => {
@@ -132,11 +134,7 @@ const ExampleFinalForm = () => {
         validate={validate}
         render={({ handleSubmit, form, submitting, pristine, values }) => (
           <form onSubmit={handleSubmit}>
-            {/* <Field
-              name="firstName"
-              label="FirstName"
-              validate={compose(required('test'), minLength(20))}
-            >
+            <Field name="firstName" label="FirstName">
               {props => {
                 const { input, meta, ...rest } = props;
                 return (
@@ -145,14 +143,22 @@ const ExampleFinalForm = () => {
                       {...props}
                       type="text"
                       placeholder="FirstName"
+                      name="firstName"
                     />
-                    {meta.errors && meta.touched && <span>{meta.errors}</span>}
+                    {console.log('meta ::', meta)}
+                    {meta.errors && meta.touched && (
+                      <span>
+                        {meta.errors.map(errMsg => (
+                          <></>
+                        ))}
+                      </span>
+                    )}
                   </>
                 );
               }}
-            </Field> */}
+            </Field>
 
-            <Field name="firstName" label="FirstName" component={AdaptField} />
+            {/* <Field name="firstName" label="FirstName" component={AdaptField} /> */}
 
             <Field
               name="lastName"
