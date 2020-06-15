@@ -52,8 +52,14 @@ const schema = object().shape({
 });
 const handleRequire = value => {
   return schema
-    .validate({ firstName: value.firstName, lastName: value.lastName })
-    .catch(({ errors }) => errors);
+    .validate(
+      { firstName: value.firstName, lastName: value.lastName },
+      { abortEarly: false }
+    )
+    .catch(err => {
+      console.log('errors ::', err);
+      return err.errors;
+    });
 };
 
 const YupFinalform = () => {
@@ -68,19 +74,9 @@ const YupFinalform = () => {
         validate={handleRequire}
         render={({ handleSubmit, form, submitting, pristine, values }) => (
           <form onSubmit={handleSubmit}>
-            <Field
-              name="firstName"
-              label="FirstName"
-              component={AdaptField}
-              validate={required('First Name')}
-            />
+            <Field name="firstName" label="FirstName" component={AdaptField} />
 
-            <Field
-              name="lastName"
-              label="LastName"
-              component={AdaptField}
-              validate={required('Last Name')}
-            />
+            <Field name="lastName" label="LastName" component={AdaptField} />
 
             <Field
               name="favoriteAnimal"

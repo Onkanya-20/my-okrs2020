@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Field } from 'react-final-form';
 
-import { required } from 'utils/form/validators';
+import { required, minLength, email } from 'utils/form/validators';
 
 import { Wrapper, Headline } from './index.view';
 import { AdaptField, AdaptSelect, AdaptTextarea } from 'components/Field';
@@ -117,15 +117,20 @@ const ExampleFinalForm = () => {
     return spected(validationRules, { firstName: values.firstName });
   };
 
+  const composeValidators = (...validators) => value => {
+    const errors = [];
+    validators.reduce((error, validator) => errors.push(validator(value)), []);
+    return errors;
+  };
+
   return (
     <Wrapper>
       <Headline>Simple Form Example</Headline>
       <Form
         onSubmit={onSubmit}
-        validate={validate}
         render={({ handleSubmit, form, submitting, pristine, values }) => (
           <form onSubmit={handleSubmit}>
-            <Field name="firstName" label="FirstName">
+            {/* <Field name="firstName" label="FirstName">
               {props => {
                 const { input, meta, ...rest } = props;
                 return (
@@ -146,9 +151,37 @@ const ExampleFinalForm = () => {
                   </>
                 );
               }}
-            </Field>
+            </Field> */}
 
-            {/* <Field name="firstName" label="FirstName" component={AdaptField} /> */}
+            {/* <Field
+              name="firstName"
+              label="FirstName"
+              component={AdaptField}
+              validate={composeValidators(
+                required('firstName'),
+                minLength(20),
+                email
+              )}
+            /> */}
+            <Field
+              name="firstName"
+              label="FirstName"
+              component={AdaptField}
+              validate={composeValidators(
+                required('firstName'),
+                minLength(20),
+                email
+              )}
+            >
+              {({ input, meta }) => (
+                <div>
+                  <input {...input} type="text" />
+                  {meta.error &&
+                    meta.touched &&
+                    meta.error.map(error => <span>{error}</span>)}
+                </div>
+              )}
+            </Field>
 
             <Field
               name="lastName"
