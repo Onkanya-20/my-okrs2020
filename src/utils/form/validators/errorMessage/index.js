@@ -37,5 +37,5 @@ export const newRequired = value => {
   const counterCharactor = provideErrorMessage(
     `${value} is more than 20 charactor.`
   );
-  return { isRequied: isRequied, counterCharactor: counterCharactor };
+  return { isRequied, counterCharactor };
 };

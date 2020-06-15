@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import withUploadFile from './uploadFile';
 import Dropzone from 'react-dropzone';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import Loading from './loading';
 
 const PreviewImage = styled.span`
   width: 100%;
@@ -107,13 +106,12 @@ const UploadImage = ({ uploadFile, removeFile, onDrop, isLoading }) => {
   const acceptedFile = ['image/png', 'image/jpeg'];
 
   const previewImage = uploadFile.map(file => (
-    <>
+    <Fragment key={file.name}>
       <Wrapper>
         <PreviewImage src={file.preview} key={file.name} />
-        {isLoading ? <Loading /> : null}
       </Wrapper>
       <RemoveButton onClick={removeFile(file)}>remove image</RemoveButton>
-    </>
+    </Fragment>
   ));
 
   return (

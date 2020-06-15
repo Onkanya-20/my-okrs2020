@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Form, Field } from 'react-final-form';
 
-import { required, minLength, email, maxLength } from 'utils/form/validators';
+import { required } from 'utils/form/validators';
 
 import { Wrapper, Headline } from './index.view';
 import { AdaptField, AdaptSelect, AdaptTextarea } from 'components/Field';
 import Button from 'components/Button';
 
-import { string, number, object, array } from 'yup';
+import { string, object } from 'yup';
 // import * as yup from 'yup';
 
 // import Dropzone from './dropzone';
@@ -51,28 +51,10 @@ const schema = object().shape({
     .min(6)
 });
 const handleRequire = value => {
-  // const data = string().required();
-  // return data.isValid(value).then(res => (res ? undefined : 'please'));
-
   return schema
     .validate({ firstName: value.firstName, lastName: value.lastName })
     .catch(({ errors }) => errors);
-  // return schema.validate({ firstName: value.firstName, lastName: value.lastName })
-  // .catch(err => {
-  //     console.log('name', err.name, 'err', err.errors);
-  //     return err.errors;
-  // });
-  // .then(res => undefined)
-  // .catch(error => error.errors);
 };
-
-// const handleMin = value => {
-//   const schema = string().min(10);
-//   return schema
-//     .validate(value)
-//     .then(res => undefined)
-//     .catch(error => error.errors);
-// };
 
 const YupFinalform = () => {
   const onSubmit = value => {
@@ -83,6 +65,7 @@ const YupFinalform = () => {
       <Headline>Simple Form Example</Headline>
       <Form
         onSubmit={onSubmit}
+        validate={handleRequire}
         render={({ handleSubmit, form, submitting, pristine, values }) => (
           <form onSubmit={handleSubmit}>
             <Field
@@ -115,20 +98,6 @@ const YupFinalform = () => {
               optional
             />
 
-            {/* <Field name="image" label="Image" component={AdaptField}>
-              {props => (
-                <>
-                  <Dropzone {...props.input} acceptedFile={acceptedFile} />
-                </>
-              )}
-            </Field> */}
-            {/* <Field name="image" label="Image" component={AdaptField}>
-              {props => (
-                <>
-                  <DropzoneHoc {...props.input} />
-                </>
-              )}
-            </Field> */}
             <Field name="image" label="Image" component={AdaptField}>
               {props => (
                 <>

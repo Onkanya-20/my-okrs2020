@@ -1,21 +1,16 @@
 import React from 'react';
 import { Form, Field } from 'react-final-form';
-// import { setIn } from 'final-form';
 
-import { required, minLength, email } from 'utils/form/validators';
+import { required } from 'utils/form/validators';
 
 import { Wrapper, Headline } from './index.view';
 import { AdaptField, AdaptSelect, AdaptTextarea } from 'components/Field';
 import Button from 'components/Button';
-// import { string, object } from 'yup';
-// import * as yup from 'yup';
 
-// import Dropzone from './dropzone';
 import DropzoneHoc from './DropzoneHOC';
-// import DropzoneRenderProps from './DropzoneRenderProps';
 
 import spected from 'spected';
-import { compose, curry, head, isEmpty, length, not, prop } from 'ramda';
+import { compose, curry, isEmpty, not, prop } from 'ramda';
 // import {
 //   requireError,
 //   minLengthError,
@@ -76,7 +71,7 @@ const requireError = fieldName => <div>{`${fieldName} is required.`}</div>;
 
 const ExampleFinalForm = () => {
   const onSubmit = value => {
-    console.log('value ::', value);
+    // console.log('value ::', value);
   };
 
   //rules
@@ -120,10 +115,6 @@ const ExampleFinalForm = () => {
 
   const validate = values => {
     return spected(validationRules, { firstName: values.firstName });
-    // firstName: [
-    //   [isLengthGreaterThan(2), minimumMsg('Random', 3)],
-    //   [hasCapitalLetter, capitalLetterMsg('Random')]
-    // ]
   };
 
   return (
@@ -145,7 +136,6 @@ const ExampleFinalForm = () => {
                       placeholder="FirstName"
                       name="firstName"
                     />
-                    {console.log('meta ::', meta)}
                     {meta.errors && meta.touched && (
                       <span>
                         {meta.errors.map(errMsg => (
@@ -183,15 +173,7 @@ const ExampleFinalForm = () => {
               optional
             />
 
-            {/* <Field name="image" label="Image" component={AdaptField}>
-              {props => (
-                <>
-                  <Dropzone {...props.input} acceptedFile={acceptedFile} />
-                </>
-              )}
-            </Field> */}
             <Field name="image" label="Image" component={DropzoneHoc} />
-            {/* <Field name="image" label="Image" component={DropzoneRenderProps} /> */}
 
             <div className="buttons">
               <Button type="submit" solid disabled={submitting}>
