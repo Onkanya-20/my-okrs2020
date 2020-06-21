@@ -8,7 +8,8 @@ import {
   wordCharacterValidate,
   isSameValidate,
   isUrlValidate,
-  passwordValidValidate
+  passwordValidValidate,
+  mustContainUpperCase
 } from './validate';
 import {
   requireError,

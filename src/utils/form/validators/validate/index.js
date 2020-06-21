@@ -42,3 +42,8 @@ export const passwordValidValidate = password => {
   const regex = /(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*)(?=.*?[^\w\s])./i;
   return regex.test(password);
 };
+
+export const mustContainUpperCase = password => {
+  const regex = /(?=.*[A-Z])./i;
+  return regex.text(password);
+};

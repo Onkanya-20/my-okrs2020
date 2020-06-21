@@ -1,29 +1,18 @@
 import React from 'react';
 import { Form, Field } from 'react-final-form';
 
-import { required, minLength, email } from 'utils/form/validators';
+import {
+  required,
+  minLength,
+  email,
+  passwordValid
+} from 'utils/form/validators';
 
 import { Wrapper, Headline } from './index.view';
 import { AdaptField, AdaptSelect, AdaptTextarea } from 'components/Field';
 import Button from 'components/Button';
 
 import DropzoneHoc from './DropzoneHOC';
-
-import spected from 'spected';
-import { compose, curry, isEmpty, not, prop } from 'ramda';
-// import {
-//   requireError,
-//   minLengthError,
-//   maxLengthError,
-//   emailError
-// } from 'utils/form/validators/errorMessage';
-
-// import {
-//   requiredValidate,
-//   minLengthValidate,
-//   maxLengthValidate,
-//   emailValidate
-// } from 'utils/form/validators/validate';
 
 const animalOptions = [
   {
@@ -52,70 +41,8 @@ const animalOptions = [
   }
 ];
 
-// predicates
-const notEmpty = compose(not, isEmpty);
-const hasCapitalLetter = a => /[A-Z]/.test(a);
-const isGreaterThan = curry((len, a) => a > len);
-const isLengthGreaterThan = len => compose(isGreaterThan(len), prop('length'));
-const requiredValidate = value => value && !!value.trim();
-
-// error message
-const notEmptyMsg = field => <div>{`${field} should not be empty.`}</div>;
-const minimumMsg = (field, len) => (
-  <div>{`Minimum ${field} length of ${len} is required.`}</div>
-);
-const capitalLetterMsg = field => (
-  <div>{`${field} should contain at least one uppercase letter.`}</div>
-);
-const requireError = fieldName => <div>{`${fieldName} is required.`}</div>;
-
 const ExampleFinalForm = () => {
-  const onSubmit = value => {
-    // console.log('value ::', value);
-  };
-
-  //rules
-  const nameValidationRule = [
-    [requiredValidate, requireError('firstName')],
-    [hasCapitalLetter, capitalLetterMsg('firstName')],
-    [isLengthGreaterThan(20), minimumMsg('firstName', 20)]
-  ];
-
-  // const validate = async values => {
-  //   try {
-  //     await handleRequire().validate(values, { abortEarly: false });
-  //   } catch (err) {
-  //     const errors = err.inner.reduce((formError, innerError) => {
-  //       return setIn(formError, innerError.path, innerError.message);
-  //     }, {});
-  //     return errors;
-  //   }
-  // };
-  // const handleRequire = () => {
-  //   // const data = string().required();
-  //   // return data.isValid(value).then(res => (res ? undefined : 'please'));
-  //   const schema = object().shape({
-  //     firstName: string()
-  //       .required('Please enter your firstname.')
-  //       .min(5)
-  //       .max(10),
-  //     lastName: string()
-  //       .required('Please enter your lastName.')
-  //       .email()
-  //       .min(6)
-  //   });
-  //   return schema;
-  //   // .validate({ firstName: value.firstName, lastName: value.lastName })
-  //   // .then(res => undefined)
-  //   // .catch(error => error.errors);
-  // };
-  const validationRules = {
-    firstName: nameValidationRule
-  };
-
-  const validate = values => {
-    return spected(validationRules, { firstName: values.firstName });
-  };
+  const onSubmit = () => {};
 
   const composeValidators = (...validators) => value => {
     const errors = [];
@@ -163,7 +90,7 @@ const ExampleFinalForm = () => {
                 email
               )}
             /> */}
-            <Field
+            {/* <Field
               name="firstName"
               label="FirstName"
               component={AdaptField}
@@ -181,13 +108,30 @@ const ExampleFinalForm = () => {
                     meta.error.map(error => <span>{error}</span>)}
                 </div>
               )}
-            </Field>
+            </Field> */}
 
+            <Field
+              name="firstName "
+              validate={composeValidators(required('Last Name'), minLength(20))}
+            >
+              {({ input, meta }) => (
+                <>
+                  <input {...input} component={AdaptField} label="FirstName" />
+                  {meta.touched && meta.error.map(err => <div>{err}</div>)}
+                </>
+              )}
+            </Field>
+            <Field
+              name="passWord"
+              label="PassWord"
+              component={AdaptField}
+              validate={passwordValid}
+            />
             <Field
               name="lastName"
               label="LastName"
               component={AdaptField}
-              validate={required('Last Name')}
+              validate={composeValidators(required('Last Name'), minLength(20))}
             />
 
             <Field
