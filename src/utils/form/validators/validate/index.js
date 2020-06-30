@@ -43,7 +43,7 @@ export const passwordValidValidate = password => {
   return regex.test(password);
 };
 
-export const mustContainUpperCase = password => {
+export const mustContainUpperCase = value => {
   const regex = /(?=.*[A-Z])./i;
-  return regex.text(password);
+  return regex.test(value);
 };

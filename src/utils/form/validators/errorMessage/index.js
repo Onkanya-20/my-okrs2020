@@ -4,6 +4,9 @@ export const provideErrorMessage = curry((errorMessage, isValid) =>
   !isValid ? errorMessage : ''
 );
 
+export const upperCaseError = provideErrorMessage(
+  `Must contain capital letter.`
+);
 export const requireError = fieldName =>
   provideErrorMessage(`${fieldName} is required.`);
 

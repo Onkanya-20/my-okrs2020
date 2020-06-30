@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import withUploadFile from './uploadFile';
 import Dropzone from 'react-dropzone';
 import styled from 'styled-components';
@@ -13,10 +13,10 @@ const PreviewImage = styled.span`
   background-position: 50%;
   background-size: cover;
   display: inline-block;
+  justify-content: space-around;
 `;
 
 const Wrapper = styled.div`
-  margin: 10px;
   border-radius: 8px;
   border: 2px solid transparent;
   overflow: hidden;
@@ -77,9 +77,12 @@ const RemoveButton = styled.div`
     border: 0;
     padding: 4px 10px;
     cursor: pointer;
-    margin: 0 auto;
+    margin: 0 50px;
     margin-top: 8px;
     outline: none;
+    text-align: center;
+    background-color: lightgray;
+    width: 150px;
 `;
 const BrowseButton = styled.div`
   ${({ theme }) => theme.typography.button()}
@@ -90,9 +93,12 @@ const BrowseButton = styled.div`
     border: 0;
     padding: 4px 10px;
     cursor: pointer;
-    margin: 0 auto;
+    margin: 10px 0;
     margin-top: 8px;
     outline: none;
+    background-color: lightBlue;
+    width: 200px;
+    text-align: center;
 `;
 
 const UploadImagePropTypes = {
@@ -102,16 +108,26 @@ const UploadImagePropTypes = {
   isLoading: PropTypes.bool
 };
 
+const UploadWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+`;
+
+const PreviewWrapper = styled.div`
+  width: 33%;
+`;
+
 const UploadImage = ({ uploadFile, removeFile, onDrop, isLoading }) => {
   const acceptedFile = ['image/png', 'image/jpeg'];
 
   const previewImage = uploadFile.map(file => (
-    <Fragment key={file.name}>
+    <PreviewWrapper key={file.name}>
       <Wrapper>
         <PreviewImage src={file.preview} key={file.name} />
       </Wrapper>
       <RemoveButton onClick={removeFile(file)}>remove image</RemoveButton>
-    </Fragment>
+    </PreviewWrapper>
   ));
 
   return (
@@ -124,7 +140,7 @@ const UploadImage = ({ uploadFile, removeFile, onDrop, isLoading }) => {
           </BrowseButton>
         )}
       </Dropzone>
-      <>{previewImage}</>
+      <UploadWrapper>{previewImage}</UploadWrapper>
     </div>
   );
 };

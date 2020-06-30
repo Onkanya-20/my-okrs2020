@@ -21,10 +21,12 @@ import {
   isSameError,
   isUrlValidError,
   passwordValidError,
-  newRequired
+  newRequired,
+  upperCaseError
 } from './errorMessage';
 export { default as composeValidators } from './utils/composeValidators';
 
+export const upperCase = compose(upperCaseError, mustContainUpperCase);
 export const required = fieldName =>
   compose(requireError(fieldName), requiredValidate);
 

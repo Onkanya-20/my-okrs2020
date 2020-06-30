@@ -5,15 +5,30 @@ import {
   required,
   minLength,
   email,
-  passwordValid
+  passwordValid,
+  composeValidators
 } from 'utils/form/validators';
 
 import { Wrapper, Headline } from './index.view';
 import { AdaptField, AdaptSelect, AdaptTextarea } from 'components/Field';
 import Button from 'components/Button';
-
+import styled from 'styled-components';
 import DropzoneHoc from './DropzoneHOC';
 
+const CustomField = styled.input`
+  background-color: ${({ theme }) => theme.color.white};
+  background-clip: padding-box;
+  box-sizing: border-box;
+  border: 1px solid ${({ theme }) => theme.color.lightGray};
+  border-radius: 4px;
+  color: ${({ theme }) => theme.color.black};
+  display: block;
+  height: calc(1.5em + 0.75rem + 2px);
+  padding: 0.375rem 0.75rem;
+  width: 100%;
+  border-color: ${({ isError, theme }) =>
+    isError ? theme.color.error : theme.color.black};
+`;
 const animalOptions = [
   {
     value: 'dog',
@@ -44,7 +59,7 @@ const animalOptions = [
 const ExampleFinalForm = () => {
   const onSubmit = () => {};
 
-  const composeValidators = (...validators) => value => {
+  const composeValidators1 = (...validators) => value => {
     const errors = [];
     validators.reduce((error, validator) => errors.push(validator(value)), []);
     return errors;
@@ -109,29 +124,67 @@ const ExampleFinalForm = () => {
                 </div>
               )}
             </Field> */}
-
+            <span style={{ color: 'red' }}>First Name</span>
             <Field
               name="firstName "
-              validate={composeValidators(required('Last Name'), minLength(20))}
+              validate={composeValidators(required('Last Name'), minLength(5))}
+              label="FirstName"
             >
               {({ input, meta }) => (
                 <>
-                  <input {...input} component={AdaptField} label="FirstName" />
-                  {meta.touched && meta.error.map(err => <div>{err}</div>)}
+                  <CustomField
+                    {...input}
+                    isError={meta.touched}
+                    label="FirstName"
+                    component={AdaptField}
+                  />
+                  {meta.touched && meta.error && (
+                    <div style={{ color: 'red' }}>{meta.error}</div>
+                  )}
                 </>
               )}
             </Field>
+            {/* <span style={{ color: 'red' }}>First Name</span>
+            <Field
+              name="firstName "
+              validate={composeValidators(required('Last Name'), minLength(5))}
+              label="FirstName"
+            >
+              {({ input, meta }) => (
+                <>
+                  <CustomField
+                    {...input}
+                    isError={meta.touched}
+                    label="FirstName"
+                    component={AdaptField}
+                  />
+                  {meta.touched &&
+                    meta.error.map(err => (
+                      <div style={{ color: 'red' }}>{err}</div>
+                    ))}
+                </>
+              )}
+            </Field> */}
+            <Field
+              name="firstName"
+              label="FirstName"
+              component={AdaptField}
+              validate={required('FirstName Name')}
+            />
             <Field
               name="passWord"
               label="PassWord"
               component={AdaptField}
-              validate={passwordValid}
+              validate={composeValidators1(required('Pass Word'))}
             />
             <Field
               name="lastName"
               label="LastName"
               component={AdaptField}
-              validate={composeValidators(required('Last Name'), minLength(20))}
+              validate={composeValidators1(
+                required('Last Name'),
+                minLength(20)
+              )}
             />
 
             <Field
